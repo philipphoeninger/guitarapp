@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "540609257926",
+    "project_id": "guitarapp-dc37c",
+    "storage_bucket": "guitarapp-dc37c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540609257926:android:7e15c187db0373120a92c7",
+        "android_client_info": {
+          "package_name": "com.mobilesolutions.guitar_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "540609257926-6jsq0q2nia2n8fc8qnp96bvqt29niqtl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmTnDUmHlX6NIpt-ZaNy4kSDkxPinryxQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "540609257926-6jsq0q2nia2n8fc8qnp96bvqt29niqtl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
