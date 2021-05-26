@@ -3,16 +3,16 @@ import 'package:guitar_app/services/auth.dart';
 import 'package:guitar_app/shared/constants.dart';
 import 'package:guitar_app/shared/loading.dart';
 
-class SignIn extends StatefulWidget {
+class Register extends StatefulWidget {
   final Function toggleView;
 
-  SignIn({required this.toggleView});
+  Register({required this.toggleView});
 
   @override
-  _SignInState createState() => _SignInState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _SignInState extends State<SignIn> {
+class _RegisterState extends State<Register> {
   final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
@@ -29,14 +29,14 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         backgroundColor: Colors.blue[600],
         elevation: 0.0,
-        title: Text('Sign in to GuitarMaster'),
+        title: Text('Sign up to GuitarMaster'),
         actions: [
           TextButton.icon(
             onPressed: () {
               widget.toggleView();
             },
             icon: Icon(Icons.person),
-            label: Text('Register'),
+            label: Text('Sign In'),
           )
         ],
       ),
@@ -55,7 +55,8 @@ class _SignInState extends State<SignIn> {
                     }),
                 SizedBox(height: 20.0),
                 TextFormField(
-                    decoration: textInputDecoration.copyWith(hintText: 'Password'),
+                    decoration:
+                        textInputDecoration.copyWith(hintText: 'Password'),
                     validator: (val) => val!.length < 6
                         ? 'Password must be 6+ chars long'
                         : null,
@@ -68,17 +69,18 @@ class _SignInState extends State<SignIn> {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       setState(() => loading = true);
-                      dynamic result = await _authService.signInWithEmailAndPassword(email, password);
+                      dynamic result = await _authService
+                          .registerWithEmailAndPassword(email, password);
                       if (result == null) {
                         setState(() {
-                          error = 'could not sign in with those credentials';
+                          error = 'Please supply a valid email';
                           loading = false;
                         });
                       }
                     }
                   },
                   child: Text(
-                    'Sign in',
+                    'Register',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
