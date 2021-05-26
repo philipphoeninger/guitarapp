@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guitar_app/services/auth.dart';
 import 'package:guitar_app/shared/constants.dart';
+import 'package:guitar_app/shared/loading.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -14,6 +15,7 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
+  bool loading = false;
 
   // text field state
   String email = '';
@@ -22,7 +24,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blue[200],
       appBar: AppBar(
         backgroundColor: Colors.blue[600],
@@ -53,7 +55,8 @@ class _RegisterState extends State<Register> {
                     }),
                 SizedBox(height: 20.0),
                 TextFormField(
-                    decoration: textInputDecoration.copyWith(hintText: 'Password'),
+                    decoration:
+                        textInputDecoration.copyWith(hintText: 'Password'),
                     validator: (val) => val!.length < 6
                         ? 'Password must be 6+ chars long'
                         : null,
@@ -65,10 +68,14 @@ class _RegisterState extends State<Register> {
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
+                      setState(() => loading = true);
                       dynamic result = await _authService
                           .registerWithEmailAndPassword(email, password);
                       if (result == null) {
-                        setState(() => error = 'Please supply a valid email');
+                        setState(() {
+                          error = 'Please supply a valid email';
+                          loading = false;
+                        });
                       }
                     }
                   },

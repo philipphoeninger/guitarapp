@@ -52,7 +52,9 @@ class _MyAppState extends State<MyApp> {
 
     // Show a loader until FlutterFire is initialized
     if (!_initialized) {
-      return Text('App is loading...');
+      return Container(
+        color: Colors.white,
+      );
     }
 
     return StreamProvider<SimpleUser?>.value(
