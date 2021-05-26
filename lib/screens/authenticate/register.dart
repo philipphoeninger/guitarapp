@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:guitar_app/services/auth.dart';
 import 'package:guitar_app/shared/constants.dart';
 
-class SignIn extends StatefulWidget {
+class Register extends StatefulWidget {
   final Function toggleView;
 
-  SignIn({required this.toggleView});
+  Register({required this.toggleView});
 
   @override
-  _SignInState createState() => _SignInState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _SignInState extends State<SignIn> {
+class _RegisterState extends State<Register> {
   final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
 
@@ -27,14 +27,14 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         backgroundColor: Colors.blue[600],
         elevation: 0.0,
-        title: Text('Sign in to GuitarMaster'),
+        title: Text('Sign up to GuitarMaster'),
         actions: [
           TextButton.icon(
             onPressed: () {
               widget.toggleView();
             },
             icon: Icon(Icons.person),
-            label: Text('Register'),
+            label: Text('Sign In'),
           )
         ],
       ),
@@ -65,14 +65,15 @@ class _SignInState extends State<SignIn> {
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      dynamic result = await _authService.signInWithEmailAndPassword(email, password);
+                      dynamic result = await _authService
+                          .registerWithEmailAndPassword(email, password);
                       if (result == null) {
-                        setState(() => error = 'could not sign in with those credentials');
+                        setState(() => error = 'Please supply a valid email');
                       }
                     }
                   },
                   child: Text(
-                    'Sign in',
+                    'Register',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),

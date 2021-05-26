@@ -28,10 +28,28 @@ class AuthService {
   }
 
   // sign in with email & pw
-  // ...
+  Future signInWithEmailAndPassword(String email, String password) async {
+    try {
+      UserCredential authResult = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      User? user = authResult.user;
+      return _simpleUserFromUser(user);
+    } catch(e) {
+      print(e.toString());
+      return null;
+    }
+  }
 
   // register with email & pw
-  // ...
+  Future registerWithEmailAndPassword(String email, String password) async {
+    try {
+      UserCredential authResult = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      User? user = authResult.user;
+      return _simpleUserFromUser(user);
+    } catch(e) {
+      print(e.toString());
+      return null;
+    }
+  }
 
   // sign out
   Future signOut() async {
