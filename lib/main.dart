@@ -61,7 +61,23 @@ class _MyAppState extends State<MyApp> {
       value: AuthService().user,
       initialData: null,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
+          primaryColor: Colors.white,
+        ),
         home: AuthWrapper(),
+        // routes: {
+          // '/': (context) => Loading(),
+          //'/home': (context) => Home(),
+        // '/songs'
+        // '/performances'
+        // '/song'
+        // '/part'
+        // '/bar'
+        // '/profile'
+        // '/settings'
+        // },
       ),
     );
   }

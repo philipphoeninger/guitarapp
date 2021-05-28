@@ -36,7 +36,10 @@ class _RegisterState extends State<Register> {
               widget.toggleView();
             },
             icon: Icon(Icons.person),
-            label: Text('Sign In'),
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.black38),
+            ),
+            label: Text('Sign In', style: TextStyle(color: Colors.black45),),
           )
         ],
       ),

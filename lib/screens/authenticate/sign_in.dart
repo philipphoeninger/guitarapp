@@ -35,8 +35,11 @@ class _SignInState extends State<SignIn> {
             onPressed: () {
               widget.toggleView();
             },
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.black38),
+            ),
             icon: Icon(Icons.person),
-            label: Text('Register'),
+            label: Text('Register', style: TextStyle(color: Colors.black45),),
           )
         ],
       ),
