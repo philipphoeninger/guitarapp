@@ -9,7 +9,8 @@ class Home extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.blue[50],
       appBar: AppBar(
-        title: Text('Guitar App'),
+        title: Text('Home'),
+        centerTitle: true,
         backgroundColor: Colors.blue[400],
         elevation: 0.0,
         actions: [
@@ -19,7 +20,9 @@ class Home extends StatelessWidget {
             onPressed: () async {
               return await _authService.signOut();
             },
-            style: ButtonStyle(),
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.black38),
+            ),
           )
         ],
       ),
