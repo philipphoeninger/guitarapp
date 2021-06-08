@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:guitar_app/services/auth.dart';
-
+import 'package:guitar_app/models/menu_item.dart';
+import 'package:guitar_app/services/settings_menu.dart';
+import 'package:guitar_app/shared/constants.dart';
 
 class Performances extends StatelessWidget {
-  final AuthService _authService = AuthService();
+  final SettingsMenuService _settingsMenuService = SettingsMenuService();
 
   @override
   Widget build(BuildContext context) {
@@ -15,16 +16,15 @@ class Performances extends StatelessWidget {
         backgroundColor: Colors.blue[400],
         elevation: 0.0,
         actions: [
-          TextButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('Logout'),
-            onPressed: () async {
-              return await _authService.signOut();
-            },
-            style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all<Color>(Colors.black38),
-            ),
-          )
+          PopupMenuButton<MenuItem>(
+            onSelected: (item) =>
+                _settingsMenuService.onItemSelected(context, item),
+            itemBuilder: (context) => [
+              ...itemsFirst.map(_settingsMenuService.buildItem).toList(),
+              PopupMenuDivider(),
+              ...itemsSecond.map(_settingsMenuService.buildItem).toList(),
+            ],
+          ),
         ],
       ),
     );
