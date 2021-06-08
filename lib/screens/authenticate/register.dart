@@ -37,6 +37,9 @@ class _RegisterState extends State<Register> {
             },
             icon: Icon(Icons.person),
             label: Text('Sign In'),
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.black38),
+            ),
           )
         ],
       ),
