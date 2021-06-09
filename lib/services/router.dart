@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:guitar_app/screens/account.dart';
+import 'package:guitar_app/screens/account/account.dart';
 import 'package:guitar_app/screens/auth_wrapper.dart';
 import 'package:guitar_app/screens/home.dart';
 

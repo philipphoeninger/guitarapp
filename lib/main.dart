@@ -65,6 +65,7 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           primaryColor: Colors.white,
+          dividerColor: Colors.black,
         ),
         home: AuthWrapper(),
       ),
