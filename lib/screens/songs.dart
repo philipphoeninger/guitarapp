@@ -17,6 +17,9 @@ class Songs extends StatelessWidget {
         elevation: 0.0,
         actions: [
           PopupMenuButton<MenuItem>(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16)
+            ),
             onSelected: (item) =>
                 _settingsMenuService.onItemSelected(context, item),
             itemBuilder: (context) => [
