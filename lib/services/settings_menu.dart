@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guitar_app/models/menu_item.dart';
-import 'package:guitar_app/screens/account.dart';
+import 'package:guitar_app/screens/account/account.dart';
 import 'package:guitar_app/screens/settings.dart';
 import 'package:guitar_app/services/auth.dart';
 import 'package:guitar_app/shared/constants.dart';

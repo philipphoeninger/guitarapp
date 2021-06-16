@@ -6,7 +6,10 @@ class AuthService {
 
   // create user object based on FirebaseUser
   SimpleUser? _simpleUserFromUser(User? user) {
-    return user != null ? SimpleUser(uid: user.uid) : null;
+    String email = ((user != null && user.email != null && user.email != '') ? user.email : '<No Email Provided>')!;
+    String fullName = ((user != null && user.displayName != null && user.displayName != '') ? user.displayName : '<No Name Provided>')!;
+    String description = '<No Description Provided>';  // add description field to user model in firebase
+    return user != null ? SimpleUser(uid: user.uid, email: email, fullName: fullName, description: description) : null;
   }
 
   // auth change user stream
