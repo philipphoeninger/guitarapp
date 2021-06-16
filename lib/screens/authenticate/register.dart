@@ -29,7 +29,7 @@ class _RegisterState extends State<Register> {
       appBar: AppBar(
         backgroundColor: Colors.blue[600],
         elevation: 0.0,
-        title: Text('Sign up to GuitarMaster'),
+        title: Text('Sign up to $applicationName'),
         actions: [
           TextButton.icon(
             onPressed: () {

@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:guitar_app/models/menu_item.dart';
 
+// Application Information
+const applicationVersion = '0.0.1';
+const applicationName = 'NoteForNote';
+const applicationIcon = FlutterLogo();
+const applicationLegalese = 'Philipp Höninger \nMax Hild';
+
 const textInputDecoration = InputDecoration(
   fillColor: Colors.white,
   filled: true,

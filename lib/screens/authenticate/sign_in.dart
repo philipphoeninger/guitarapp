@@ -29,7 +29,7 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         backgroundColor: Colors.blue[600],
         elevation: 0.0,
-        title: Text('Sign in to GuitarMaster'),
+        title: Text('Sign in to $applicationName'),
         actions: [
           TextButton.icon(
             onPressed: () {
