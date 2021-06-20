@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:guitar_app/screens/tab_navigator.dart';
+import 'package:guitar_app/widgets/tab_navigator_widget.dart';
 
 class NavigationWrapper extends StatefulWidget {
 
@@ -74,7 +74,7 @@ class _NavigationWrapperState extends State<NavigationWrapper> {
   Widget _buildOffstageNavigator({required String tabItem }) {
     return Offstage(
       offstage: _currentPage != tabItem,
-      child: TabNavigator(_navigatorKeys[tabItem]!, tabItem),
+      child: TabNavigatorWidget(_navigatorKeys[tabItem]!, tabItem),
     );
   }
 }

@@ -10,17 +10,17 @@ class TabNavigatorRoutes {
   static const String performances = '/performances';
 }
 
-class TabNavigator extends StatefulWidget {
+class TabNavigatorWidget extends StatefulWidget {
   final GlobalKey<NavigatorState> navigatorKey;
   final String tabItem;
 
-  TabNavigator(this.navigatorKey, this.tabItem);
+  TabNavigatorWidget(this.navigatorKey, this.tabItem);
 
   @override
   _TabNavigatorState createState() => _TabNavigatorState();
 }
 
-class _TabNavigatorState extends State<TabNavigator> {
+class _TabNavigatorState extends State<TabNavigatorWidget> {
   @override
   Widget build(BuildContext context) {
     Widget child;
