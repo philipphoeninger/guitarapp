@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guitar_app/models/simple_user.dart';
+import 'package:guitar_app/providers/performances.dart';
 import 'package:guitar_app/screens/auth_wrapper.dart';
 import 'package:guitar_app/services/auth.dart';
 import 'package:provider/provider.dart';
@@ -57,17 +58,22 @@ class _MyAppState extends State<MyApp> {
       );
     }
 
-    return StreamProvider<SimpleUser?>.value(
-      value: AuthService().user,
-      initialData: null,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          scaffoldBackgroundColor: Colors.white,
-          primaryColor: Colors.white,
-          dividerColor: Colors.black,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => PerformancesProvider()),
+      ],
+      child: StreamProvider<SimpleUser?>.value(
+        value: AuthService().user,
+        initialData: null,
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            scaffoldBackgroundColor: Colors.white,
+            primaryColor: Colors.white,
+            dividerColor: Colors.black,
+          ),
+          home: AuthWrapper(),
         ),
-        home: AuthWrapper(),
       ),
     );
   }
