@@ -35,8 +35,10 @@ class PerformanceFormWidget extends StatelessWidget {
     initialValue: title,
     onChanged: onChangedTitle,
     validator: (title) {
-      if (title!.isEmpty) {
+      if (title!.trim().isEmpty) {
         return 'Der Titel darf nicht leer sein';
+      } else if (title.toLowerCase().trim() == 'unsortiert') {
+        return 'Der Titel darf nicht \"unsortiert\" lauten';
       }
       return null;
     },

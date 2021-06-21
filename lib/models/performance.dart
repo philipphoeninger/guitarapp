@@ -18,15 +18,15 @@ class Performance {
 
   static Performance fromJson(Map<String, dynamic> json) => Performance(
         createdTime: Utils.toDateTime(json['createdTime']),
-        title: json['title'],
-        description: json['description'],
-        id: json['id'],
+        title: json['title'].trim(),
+        description: json['description'].trim(),
+        id: json['id'].trim(),
       );
 
   Map<String, dynamic> toJson() => {
         'createdTime': Utils.fromDateTimeToJson(createdTime),
-        'id': id,
-        'title': title,
-        'description': description,
+        'id': id.trim(),
+        'title': title.trim(),
+        'description': description.trim(),
       };
 }
