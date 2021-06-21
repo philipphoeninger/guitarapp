@@ -3,10 +3,10 @@ import 'package:guitar_app/models/menu_item.dart';
 import 'package:guitar_app/services/settings_menu.dart';
 import 'package:guitar_app/shared/constants.dart';
 import 'package:guitar_app/models/performance.dart';
-import 'package:guitar_app/widgets/add_performance_dialog_widget.dart';
+import 'package:guitar_app/widgets/performance/add_performance_dialog_widget.dart';
 import 'package:guitar_app/widgets/search_widget.dart';
 import 'package:guitar_app/services/database.dart';
-import 'package:guitar_app/widgets/performance_list_widget.dart';
+import 'package:guitar_app/widgets/performance/performance_list_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:guitar_app/providers/performances.dart';
 
