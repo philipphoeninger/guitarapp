@@ -59,6 +59,7 @@ class _SongsState extends State<Songs> {
                   return Center(child: CircularProgressIndicator());
                 default:
                   if (snapshot.hasError) {
+                    print(snapshot.error);
                     return buildText('Etwas ist schiefgelaufen...');
                   } else {
                     final songs = snapshot.data;

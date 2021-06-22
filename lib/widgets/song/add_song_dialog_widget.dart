@@ -52,6 +52,7 @@ class _AddSongDialogWidgetState extends State<AddSongDialogWidget> {
         title: title,
         description: description,
         createdTime: DateTime.now(),
+        performances: [],
       );
 
       final provider = Provider.of<SongsProvider>(context, listen: false);

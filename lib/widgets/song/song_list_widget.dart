@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guitar_app/models/song.dart';
-import 'package:guitar_app/widgets/song/song_card_songs.dart';
+import 'package:guitar_app/widgets/song/cards/song_card_songs.dart';
 
 class SongListWidget extends StatelessWidget {
   late final List<Song> songs;
