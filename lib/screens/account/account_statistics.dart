@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:guitar_app/providers/songs.dart';
+import 'package:guitar_app/providers/performances.dart';
+import 'package:provider/provider.dart';
 
 class AccountStatistics extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => IntrinsicHeight(
-    child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            buildButton(context, '12', 'Songs'),
-            buildDivider(),
-            buildButton(context, '31', 'Parts'),
-            buildDivider(),
-            buildButton(context, '4', 'Auftritte'),
-          ],
-        ),
-  );
+  Widget build(BuildContext context) {
+    int songsCounter = Provider.of<SongsProvider>(context).songs.length;
+    int performancesCounter = Provider.of<PerformancesProvider>(context).performances.length;
 
-  Widget buildButton(BuildContext context, String value, String label) =>
+    return IntrinsicHeight(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          buildButton(context, songsCounter, 'Songs'),
+          buildDivider(),
+          buildButton(context, 0, 'Parts'),
+          buildDivider(),
+          buildButton(context, performancesCounter, 'Auftritte'),
+        ],
+      ),
+    );
+  }
+
+  Widget buildButton(BuildContext context, int value, String label) =>
       MaterialButton(
         padding: EdgeInsets.symmetric(vertical: 4),
         onPressed: () {},
@@ -25,7 +33,7 @@ class AccountStatistics extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              value,
+              value.toString(),
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
             ),
             SizedBox(height: 2),

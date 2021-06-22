@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:guitar_app/models/simple_user.dart';
 import 'package:guitar_app/screens/account/account_image.dart';
 import 'package:guitar_app/screens/account/account_statistics.dart';
-import 'package:provider/provider.dart';
+import 'package:guitar_app/screens/account/edit_account.dart';
 
 class Account extends StatefulWidget {
+  final SimpleUser user;
+
+  Account({required this.user});
+
   @override
   _AccountState createState() => _AccountState();
 }
@@ -12,7 +16,6 @@ class Account extends StatefulWidget {
 class _AccountState extends State<Account> {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<SimpleUser?>(context);
 
     return Scaffold(
       backgroundColor: Colors.green[50],
@@ -21,6 +24,12 @@ class _AccountState extends State<Account> {
         centerTitle: true,
         backgroundColor: Colors.green[400],
         elevation: 0.0,
+        actions: [
+          IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () => editAccount(context),
+          )
+        ]
       ),
       body: ListView(
         physics: BouncingScrollPhysics(),
@@ -31,11 +40,11 @@ class _AccountState extends State<Account> {
             onClicked: () {},
           ),
           const SizedBox(height: 30),
-          buildName(user!),
+          buildName(widget.user),
           const SizedBox(height: 30),
           AccountStatistics(),
           const SizedBox(height: 30),
-          buildDescription(user),
+          buildDescription(widget.user),
         ],
       ),
     );
@@ -80,5 +89,9 @@ class _AccountState extends State<Account> {
         ),
       ],
     ),
+  );
+
+  void editAccount(BuildContext context) => Navigator.of(context).push(
+    MaterialPageRoute(builder: (context) => EditAccount()),
   );
 }
