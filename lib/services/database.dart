@@ -31,9 +31,51 @@ class DatabaseService {
         .toList());
   }
 
+  static Future<String> deletePerformance(Performance performance) async {
+    // delete performanceID from songs that include it in performances array
+    var batch = FirebaseFirestore.instance.batch();
+
+    var songsSnapshot = await FirebaseFirestore.instance
+        .collection('songs')
+        .where('performances', arrayContains: performance.id)
+        .get();
+
+    for (var songDoc in songsSnapshot.docs) {
+      Song song = Song.fromJson(songDoc.data());
+      bool success = song.performances.remove(performance.id);
+      if (success) {
+        if (song.performances.isEmpty) {
+          await addUnsortedPerformance(song);
+        }
+
+        batch.update(
+            FirebaseFirestore.instance.collection('songs').doc(songDoc.id),
+            {'performances': song.performances});
+      }
+    }
+
+    await batch.commit();
+
+    // delete performance
+    final docPerformance = FirebaseFirestore.instance
+        .collection('performances')
+        .doc(performance.id);
+    await docPerformance.delete();
+
+    return docPerformance.id;
+  }
+
+  static Future<String> updatePerformance(Performance performance) async {
+    final docPerformance = FirebaseFirestore.instance
+        .collection('performances')
+        .doc(performance.id);
+    await docPerformance.update(performance.toJson());
+    return docPerformance.id;
+  }
+
   // Song CRUD methods
 
-  static Future<String> createSong(Song song) async {
+  static Future<Song> addUnsortedPerformance(Song song) async {
     // get "Unsortiert" performance & add it to Song
     var unsortedPerformanceSnapshot = await FirebaseFirestore.instance
         .collection('performances')
@@ -42,10 +84,15 @@ class DatabaseService {
         .get();
     var unsortedPerformance =
         Performance.fromJson(unsortedPerformanceSnapshot.docs.first.data());
-    List<Performance> performances = [];
-    performances.add(unsortedPerformance);
+    List<String> performances = [];
+    performances.add(unsortedPerformance.id);
 
     song.performances = performances;
+    return song;
+  }
+
+  static Future<String> createSong(Song song) async {
+    await addUnsortedPerformance(song);
 
     // set Song ID and add Song to Firebase
     final docSong = FirebaseFirestore.instance.collection('songs').doc();
@@ -61,14 +108,20 @@ class DatabaseService {
         .orderBy(SongField.createdTime, descending: true)
         .snapshots();
 
-    return stream.map((event) => event.docs
-        .map((doc) => Song(
-              id: doc['id'],
-              title: doc['title'],
-              createdTime: Utils.toDateTime(doc['createdTime']),
-              description: doc['description'],
-            ))
-        .toList());
+    return stream.map((event) => event.docs.map((doc) {
+          List<String> performancesIDs = [];
+          for (var per in doc['performances']) {
+            performancesIDs.add(per.toString());
+          }
+
+          return Song(
+            id: doc['id'],
+            title: doc['title'],
+            createdTime: Utils.toDateTime(doc['createdTime']),
+            description: doc['description'],
+            performances: performancesIDs,
+          );
+        }).toList());
   }
 
   static Future<String> updateSong(Song song) async {

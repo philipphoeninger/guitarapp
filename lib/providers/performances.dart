@@ -16,4 +16,15 @@ class PerformancesProvider extends ChangeNotifier {
         _performances = performances;
         notifyListeners();
       });
+
+  Future<String> removePerformance(Performance performance) =>
+      DatabaseService.deletePerformance(performance);
+
+  Future<String> updatePerformance(
+      Performance performance, String title, String description) {
+    performance.title = title;
+    performance.description = description;
+
+    return DatabaseService.updatePerformance(performance);
+  }
 }
