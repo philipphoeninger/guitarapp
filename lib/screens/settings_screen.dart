@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:guitar_app/services/auth.dart';
 
-class Settings extends StatefulWidget {
+class SettingsScreen extends StatefulWidget {
   @override
-  _SettingsState createState() => _SettingsState();
+  _SettingsScreenState createState() => _SettingsScreenState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingsScreenState extends State<SettingsScreen> {
   final AuthService _authService = AuthService();
 
   @override

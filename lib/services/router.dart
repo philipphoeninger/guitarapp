@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:guitar_app/screens/account/account.dart';
+// import 'package:guitar_app/screens/account/account.dart';
 import 'package:guitar_app/screens/auth_wrapper.dart';
 import 'package:guitar_app/screens/home.dart';
 
@@ -7,7 +7,7 @@ import 'package:guitar_app/screens/home.dart';
 // import 'package:guitar_app/screens/part.dart';
 // import 'package:guitar_app/screens/parts.dart';
 import 'package:guitar_app/screens/performances.dart';
-import 'package:guitar_app/screens/settings.dart';
+import 'package:guitar_app/screens/settings_screen.dart';
 
 // import 'package:guitar_app/screens/song.dart';
 import 'package:guitar_app/screens/songs.dart';
@@ -33,10 +33,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     // return MaterialPageRoute(builder: (context) => Part());
     case PartsRoute:
     // return MaterialPageRoute(builder: (context) => Parts());
-    case AccountRoute:
-      return MaterialPageRoute(builder: (context) => Account());
+    // case AccountRoute:
+    //   return MaterialPageRoute(builder: (context) => Account());
     case SettingsRoute:
-      return MaterialPageRoute(builder: (context) => Settings());
+      return MaterialPageRoute(builder: (context) => SettingsScreen());
     default:
       return MaterialPageRoute(builder: (context) => Home());
     // return MaterialPageRoute(builder: (context) => Undefined(settings.name!));

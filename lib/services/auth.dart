@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:guitar_app/models/simple_user.dart';
 
@@ -9,7 +10,8 @@ class AuthService {
     String email = ((user != null && user.email != null && user.email != '') ? user.email : '<No Email Provided>')!;
     String fullName = ((user != null && user.displayName != null && user.displayName != '') ? user.displayName : '<No Name Provided>')!;
     String description = '<No Description Provided>';  // add description field to user model in firebase
-    return user != null ? SimpleUser(uid: user.uid, email: email, fullName: fullName, description: description) : null;
+    DateTime createdTime = DateTime.fromMicrosecondsSinceEpoch(0);
+    return user != null ? SimpleUser(uid: user.uid, createdTime: createdTime, email: email, fullName: fullName, description: description) : null;
   }
 
   // auth change user stream
@@ -47,6 +49,15 @@ class AuthService {
     try {
       UserCredential authResult = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = authResult.user;
+      // create simple user in firebase
+      if (user != null) {
+        Map<String, dynamic> simpleUser = SimpleUser(uid: user.uid, createdTime: DateTime.now(), email: email).toJson();
+        CollectionReference collectionReference = FirebaseFirestore.instance.collection('simple_users');
+        await collectionReference.add(simpleUser);
+      }
+      else {
+        print('SimpleUser wasn\'t added to Firestore because User returned from authResults was null');
+      }
       return _simpleUserFromUser(user);
     } catch(e) {
       print(e.toString());
