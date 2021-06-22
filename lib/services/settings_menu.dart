@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:guitar_app/models/menu_item.dart';
 import 'package:guitar_app/screens/account/account.dart';
+import 'package:guitar_app/screens/help.dart';
 import 'package:guitar_app/screens/settings_screen.dart';
 import 'package:guitar_app/services/auth.dart';
 import 'package:guitar_app/shared/constants.dart';
@@ -32,7 +33,8 @@ class SettingsMenuService {
             context, MaterialPageRoute(builder: (context) => SettingsScreen()));
         break;
       case itemHelp:
-        // link to repo
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Help()));
         break;
       case itemAbout:
         showAboutDialog(
