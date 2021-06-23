@@ -43,6 +43,7 @@ class _EditSongState extends State<EditSong> {
                     Provider.of<SongsProvider>(context, listen: false);
                 provider.removeSong(widget.song);
                 Navigator.of(context).pop();
+                Navigator.of(context).pop();
                 Utils.showSnackBar(context, 'Song gelöscht');
               })
         ],
