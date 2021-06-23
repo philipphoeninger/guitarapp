@@ -4,6 +4,7 @@ import 'package:guitar_app/widgets/song/song_form_widget.dart';
 import 'package:guitar_app/models/song.dart';
 import 'package:provider/provider.dart';
 import 'package:guitar_app/utils.dart';
+import 'package:guitar_app/models/simple_user.dart';
 
 class AddSongDialogWidget extends StatefulWidget {
   @override
@@ -47,19 +48,23 @@ class _AddSongDialogWidgetState extends State<AddSongDialogWidget> {
     if (!isValid) {
       return;
     } else {
-      final song = Song(
-        id: DateTime.now().toString(),
-        title: title,
-        description: description,
-        createdTime: DateTime.now(),
-        performances: [],
-      );
+      final user = Provider.of<SimpleUser?>(context, listen: false);
+      if (user != null) {
+        final song = Song(
+          id: DateTime.now().toString(),
+          title: title,
+          description: description,
+          createdTime: DateTime.now(),
+          user: user.uid,
+          performances: [],
+        );
 
-      final provider = Provider.of<SongsProvider>(context, listen: false);
+        final provider = Provider.of<SongsProvider>(context, listen: false);
 
-      await provider.addSong(song);
-      Utils.showSnackBar(context, 'Song erstellt');
-      Navigator.of(context).pop();
+        await provider.addSong(song);
+        Utils.showSnackBar(context, 'Song erstellt');
+        Navigator.of(context).pop();
+      }
     }
   }
 }

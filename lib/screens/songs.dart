@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guitar_app/models/menu_item.dart';
+import 'package:guitar_app/models/simple_user.dart';
 import 'package:guitar_app/models/song.dart';
 import 'package:guitar_app/providers/songs.dart';
 import 'package:guitar_app/services/database.dart';
@@ -52,7 +53,7 @@ class _SongsState extends State<Songs> {
       body: Column(children: [
         buildSearch(),
         StreamBuilder<List<Song>>(
-            stream: DatabaseService.readSongs(),
+            stream: DatabaseService.readSongs(Provider.of<SimpleUser?>(context)!),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:

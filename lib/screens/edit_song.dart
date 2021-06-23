@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guitar_app/models/song.dart';
 import 'package:guitar_app/providers/songs.dart';
+import 'package:guitar_app/screens/songs.dart';
 import 'package:guitar_app/utils.dart';
 import 'package:guitar_app/widgets/song/song_form_widget.dart';
 import 'package:provider/provider.dart';
@@ -42,8 +43,8 @@ class _EditSongState extends State<EditSong> {
                 final provider =
                     Provider.of<SongsProvider>(context, listen: false);
                 provider.removeSong(widget.song);
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Songs()));
                 Utils.showSnackBar(context, 'Song gelöscht');
               })
         ],

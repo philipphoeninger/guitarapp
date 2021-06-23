@@ -4,6 +4,7 @@ import 'package:guitar_app/widgets/performance/performance_form_widget.dart';
 import 'package:guitar_app/models/performance.dart';
 import 'package:provider/provider.dart';
 import 'package:guitar_app/utils.dart';
+import 'package:guitar_app/models/simple_user.dart';
 
 class AddPerformanceDialogWidget extends StatefulWidget {
   @override
@@ -49,19 +50,23 @@ class _AddPerformanceDialogWidgetState
     if (!isValid) {
       return;
     } else {
-      final performance = Performance(
-        id: DateTime.now().toString(),
-        title: title,
-        description: description,
-        createdTime: DateTime.now(),
-      );
+      final user = Provider.of<SimpleUser?>(context, listen: false);
+      if (user != null) {
+        final performance = Performance(
+          id: DateTime.now().toString(),
+          title: title,
+          description: description,
+          createdTime: DateTime.now(),
+          user: user.uid,
+        );
 
-      final provider =
-          Provider.of<PerformancesProvider>(context, listen: false);
+        final provider =
+        Provider.of<PerformancesProvider>(context, listen: false);
 
-      await provider.addPerformance(performance);
-      Utils.showSnackBar(context, 'Auftritt erstellt');
-      Navigator.of(context).pop();
+        await provider.addPerformance(performance);
+        Utils.showSnackBar(context, 'Auftritt erstellt');
+        Navigator.of(context).pop();
+      }
     }
   }
 }

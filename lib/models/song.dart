@@ -10,12 +10,14 @@ class Song {
   String description;
   DateTime createdTime;
   List<String> performances;
+  String user;
 
   Song({
     required this.id,
     required this.title,
     required this.createdTime,
     required this.performances,
+    required this.user,
     this.description = '',
   });
 
@@ -30,6 +32,7 @@ class Song {
       title: json['title'].trim(),
       description: json['description'].trim(),
       id: json['id'].trim(),
+      user: json['user'].trim(),
       performances: performancesIDs,
     );
   }
@@ -40,6 +43,7 @@ class Song {
       'id': id.trim(),
       'title': title.trim(),
       'description': description.trim(),
+      'user': user.trim(),
       'performances': performances,
     };
     return map;

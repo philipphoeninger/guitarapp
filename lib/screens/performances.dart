@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guitar_app/models/menu_item.dart';
+import 'package:guitar_app/models/simple_user.dart';
 import 'package:guitar_app/services/settings_menu.dart';
 import 'package:guitar_app/shared/constants.dart';
 import 'package:guitar_app/models/performance.dart';
@@ -52,7 +53,7 @@ class _PerformancesState extends State<Performances> {
       body: Column(children: [
         buildSearch(),
         StreamBuilder<List<Performance>>(
-            stream: DatabaseService.readPerformances(),
+            stream: DatabaseService.readPerformances(Provider.of<SimpleUser?>(context)!),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
@@ -108,7 +109,7 @@ class _PerformancesState extends State<Performances> {
   Widget buildText(String text) => Center(
         child: Text(
           text,
-          style: TextStyle(fontSize: 24, color: Colors.white),
+          style: TextStyle(fontSize: 24, color: Colors.black),
         ),
       );
 }

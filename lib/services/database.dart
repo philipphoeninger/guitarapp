@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:guitar_app/models/part.dart';
 import 'package:guitar_app/models/performance.dart';
+import 'package:guitar_app/models/simple_user.dart';
 import 'package:guitar_app/models/song.dart';
 import 'package:guitar_app/utils.dart';
 
@@ -16,9 +17,10 @@ class DatabaseService {
     return docPerformance.id;
   }
 
-  static Stream<List<Performance>> readPerformances() {
+  static Stream<List<Performance>> readPerformances(SimpleUser user) {
     Stream<QuerySnapshot> stream = FirebaseFirestore.instance
         .collection('performances')
+        .where('user', whereIn: [user.uid, '0'])
         .orderBy(PerformanceField.createdTime, descending: true)
         .snapshots();
 
@@ -28,6 +30,7 @@ class DatabaseService {
               title: doc['title'],
               createdTime: Utils.toDateTime(doc['createdTime']),
               description: doc['description'],
+              user: doc['user'],
             ))
         .toList());
   }
@@ -103,23 +106,24 @@ class DatabaseService {
     return docSong.id;
   }
 
-  static Stream<List<Song>> readSongs() {
+  static Stream<List<Song>> readSongs(SimpleUser user) {
     Stream<QuerySnapshot> stream = FirebaseFirestore.instance
         .collection('songs')
+        .where('user', isEqualTo: user.uid)
         .orderBy(SongField.createdTime, descending: true)
         .snapshots();
 
     return stream.map((event) => event.docs.map((doc) {
-          List<String> performancesIDs = [];
-          for (var per in doc['performances']) {
-            performancesIDs.add(per.toString());
-          }
-
+      List<String> performancesIDs = [];
+      for (var per in doc['performances']) {
+        performancesIDs.add(per.toString());
+      }
           return Song(
             id: doc['id'],
             title: doc['title'],
             createdTime: Utils.toDateTime(doc['createdTime']),
             description: doc['description'],
+            user: doc['user'],
             performances: performancesIDs,
           );
         }).toList());
@@ -133,6 +137,13 @@ class DatabaseService {
 
   static Future<String> deleteSong(Song song) async {
     final docSong = FirebaseFirestore.instance.collection('songs').doc(song.id);
+    // delete all parts from song
+    await FirebaseFirestore.instance.collection('songs').doc(song.id).collection('parts').get().then((snapshot) {
+      for (DocumentSnapshot part in snapshot.docs) {
+        part.reference.delete();
+      }
+    });
+
     await docSong.delete();
     return docSong.id;
   }
