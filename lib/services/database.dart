@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:guitar_app/models/part.dart';
 import 'package:guitar_app/models/performance.dart';
 import 'package:guitar_app/models/song.dart';
 import 'package:guitar_app/utils.dart';
@@ -134,5 +135,58 @@ class DatabaseService {
     final docSong = FirebaseFirestore.instance.collection('songs').doc(song.id);
     await docSong.delete();
     return docSong.id;
+  }
+
+  // Part CRUD methods
+
+  static Future<String> createPart(Part part, Song song) async {
+    // set Part ID and add Part to Firebase
+    final docPart = FirebaseFirestore.instance
+        .collection('songs')
+        .doc(song.id)
+        .collection('parts')
+        .doc();
+    part.id = docPart.id.trim();
+    await docPart.set(part.toJson());
+
+    return docPart.id;
+  }
+
+  static Future<String> deletePart(Part part, Song song) async {
+    final docPart = FirebaseFirestore.instance
+        .collection('songs')
+        .doc(song.id)
+        .collection('parts')
+        .doc(part.id);
+    await docPart.delete();
+    return docPart.id;
+  }
+
+  static Future<String> updatePart(Part part, Song song) async {
+    final docPart = FirebaseFirestore.instance
+        .collection('songs')
+        .doc(song.id)
+        .collection('parts')
+        .doc(part.id);
+    await docPart.update(part.toJson());
+    return docPart.id;
+  }
+
+  static Stream<List<Part>> readParts(Song song) {
+    Stream<QuerySnapshot> stream = FirebaseFirestore.instance
+        .collection('songs')
+        .doc(song.id)
+        .collection('parts')
+        .orderBy(PartField.createdTime, descending: false)
+        .snapshots();
+
+    return stream.map((event) => event.docs
+        .map((doc) => Part(
+              id: doc['id'],
+              title: doc['title'],
+              createdTime: Utils.toDateTime(doc['createdTime']),
+              notes: doc['notes'],
+            ))
+        .toList());
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guitar_app/models/simple_user.dart';
+import 'package:guitar_app/providers/parts.dart';
 import 'package:guitar_app/providers/performances.dart';
 import 'package:guitar_app/providers/songs.dart';
 import 'package:guitar_app/screens/auth_wrapper.dart';
@@ -63,6 +64,7 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider(create: (context) => PerformancesProvider()),
         ChangeNotifierProvider(create: (context) => SongsProvider()),
+        ChangeNotifierProvider(create: (context) => PartsProvider()),
       ],
       child: StreamProvider<SimpleUser?>.value(
         value: AuthService().user,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guitar_app/providers/parts.dart';
 import 'package:guitar_app/providers/songs.dart';
 import 'package:guitar_app/providers/performances.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +8,9 @@ class AccountStatistics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int songsCounter = Provider.of<SongsProvider>(context).songs.length;
-    int performancesCounter = Provider.of<PerformancesProvider>(context).performances.length;
+    int performancesCounter =
+        Provider.of<PerformancesProvider>(context).performances.length;
+    int partsCounter = Provider.of<PartsProvider>(context).parts.length;
 
     return IntrinsicHeight(
       child: Row(
@@ -15,7 +18,7 @@ class AccountStatistics extends StatelessWidget {
         children: [
           buildButton(context, songsCounter, 'Songs'),
           buildDivider(),
-          buildButton(context, 0, 'Parts'),
+          buildButton(context, partsCounter, 'Parts'),
           buildDivider(),
           buildButton(context, performancesCounter, 'Auftritte'),
         ],
@@ -46,7 +49,7 @@ class AccountStatistics extends StatelessWidget {
       );
 
   Widget buildDivider() => Container(
-    height: 24,
-    child: VerticalDivider(),
-  );
+        height: 24,
+        child: VerticalDivider(),
+      );
 }

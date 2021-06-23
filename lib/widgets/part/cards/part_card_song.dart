@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:guitar_app/models/part.dart';
 import 'package:guitar_app/models/song.dart';
-import 'package:guitar_app/providers/songs.dart';
-import 'package:guitar_app/screens/edit_song.dart';
+import 'package:guitar_app/providers/parts.dart';
+import 'package:guitar_app/screens/edit_part.dart';
 import 'package:provider/provider.dart';
 import 'package:guitar_app/utils.dart';
-import 'package:guitar_app/screens/song_screen.dart';
 
-class SongCardSongs extends StatelessWidget {
+class PartCardSong extends StatelessWidget {
+  final Part part;
   final Song song;
 
-  const SongCardSongs({required this.song, Key? key}) : super(key: key);
+  const PartCardSong({required this.part, required this.song, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) => ClipRRect(
         borderRadius: BorderRadius.circular(16),
         child: Slidable(
             actionPane: SlidableDrawerActionPane(),
-            key: Key(song.id),
+            key: Key(part.id),
             actions: [
               IconSlideAction(
                 icon: Icons.edit,
                 color: Colors.green,
                 caption: 'bearbeiten',
-                onTap: () => editSong(context, song),
+                onTap: () => editPart(context, part, song),
               )
             ],
             secondaryActions: [
@@ -31,16 +33,14 @@ class SongCardSongs extends StatelessWidget {
                 icon: Icons.delete,
                 color: Colors.red,
                 caption: 'Löschen',
-                onTap: () => deleteSong(context, song),
+                onTap: () => deletePart(context, part),
               )
             ],
-            child: buildSong(context)),
+            child: buildPart(context)),
       );
 
-  Widget buildSong(BuildContext context) => GestureDetector(
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => SongScreen(song: song)),
-        ),
+  Widget buildPart(BuildContext context) => GestureDetector(
+        onTap: () => editPart(context, part, song),
         child: Container(
           padding: EdgeInsets.all(20),
           color: Colors.white,
@@ -50,17 +50,17 @@ class SongCardSongs extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  song.title,
+                  part.title,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                     color: Colors.blue[500],
                   ),
                 ),
-                if (song.description.isNotEmpty)
+                if (part.notes.isNotEmpty)
                   Container(
                     margin: EdgeInsets.only(top: 0),
-                    child: Text(song.description,
+                    child: Text(part.notes,
                         style: TextStyle(fontSize: 18, height: 1.5)),
                   ),
               ],
@@ -69,14 +69,16 @@ class SongCardSongs extends StatelessWidget {
         ),
       );
 
-  Future<void> deleteSong(BuildContext context, Song song) async {
-    final provider = Provider.of<SongsProvider>(context, listen: false);
-    await provider.removeSong(song);
+  Future<void> deletePart(BuildContext context, Part part) async {
+    final provider = Provider.of<PartsProvider>(context, listen: false);
+    await provider.removePart(part, song);
 
-    Utils.showSnackBar(context, 'Song gelöscht');
+    Utils.showSnackBar(context, 'Part gelöscht');
   }
 
-  void editSong(BuildContext context, Song song) => Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => EditSong(song: song)),
+  void editPart(BuildContext context, Part part, Song song) =>
+      Navigator.of(context).push(
+        MaterialPageRoute(
+            builder: (context) => EditPart(part: part, song: song)),
       );
 }
