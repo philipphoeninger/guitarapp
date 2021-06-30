@@ -67,9 +67,10 @@ class _SongsState extends State<Songs> {
                     final provider = Provider.of<SongsProvider>(context);
                     provider.setSongs(songs!);
                     this.songs = songs;
+                    var filteredSongs = this.songs.where(containsSearchQuery).toList();
 
                     return Expanded(
-                      child: SongListWidget(this.songs),
+                      child: SongListWidget(filteredSongs),
                     );
                   }
               }
@@ -88,23 +89,16 @@ class _SongsState extends State<Songs> {
   Widget buildSearch() => SearchWidget(
         text: query,
         hintText: 'Titel eines Songs',
-        onChanged: searchSong,
+        onChanged: (text) => setState(() => this.query = text),
       );
 
-  void searchSong(String query) {
-    var songs = this.songs.where((song) {
-      final titleLower = song.title.toLowerCase();
-      final descriptionLower = song.description.toLowerCase();
-      final searchLower = query.toLowerCase();
+  bool containsSearchQuery(Song song) {
+    final titleLower = song.title.toLowerCase();
+    final descriptionLower = song.description.toLowerCase();
+    final searchLower = query.toLowerCase();
 
       return titleLower.contains(searchLower) ||
           descriptionLower.contains(searchLower);
-    }).toList();
-
-    setState(() {
-      this.query = query;
-      this.songs = songs;
-    });
   }
 
   Widget buildText(String text) => Center(
