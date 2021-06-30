@@ -18,9 +18,10 @@ class SongsProvider extends ChangeNotifier {
 
   Future<String> removeSong(Song song) => DatabaseService.deleteSong(song);
 
-  Future<String> updateSong(Song song, String title, String description) {
+  Future<String> updateSong(Song song, String title, String description, List<String> performances) {
     song.title = title;
     song.description = description;
+    song.performances = performances;
 
     return DatabaseService.updateSong(song);
   }

@@ -1,20 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:guitar_app/models/simple_user.dart';
+import 'package:guitar_app/models/performance.dart';
+import 'package:guitar_app/services/database.dart';
+import 'package:guitar_app/widgets/song/add_performances_to_song_list.dart';
+import 'package:provider/provider.dart';
 
-class SongFormWidget extends StatelessWidget {
+class SongFormWidget extends StatefulWidget {
   final String title;
   final String description;
+  final List<String> performances;
+  final List<Performance> allPerformances;
   final ValueChanged<String> onChangedTitle;
   final ValueChanged<String> onChangedDescription;
+  final ValueChanged<List<String>> onChangedPerformances;
   final VoidCallback onSavedSong;
 
   const SongFormWidget({
     Key? key,
     this.title = '',
     this.description = '',
+    this.performances = const [],
+    this.allPerformances = const [],
     required this.onChangedTitle,
     required this.onChangedDescription,
+    required this.onChangedPerformances,
     required this.onSavedSong,
   }) : super(key: key);
+
+  @override
+  _SongFormWidgetState createState() => _SongFormWidgetState();
+}
+
+class _SongFormWidgetState extends State<SongFormWidget> {
+  List<Performance> selectedPerformances = [];
+  List<Performance> allPerformances = [];
+
+  @override
+  void initState() {
+    super.initState();
+    DatabaseService.getPerformances(
+            Provider.of<SimpleUser?>(context, listen: false)!)
+        .then((performances) {
+      final unsortedPerformance = performances.singleWhere(
+          (element) => element.title.toLowerCase() == 'unsortiert');
+      performances.remove(unsortedPerformance);
+      this.allPerformances = performances;
+      this.selectedPerformances = this
+          .allPerformances
+          .where((performance) => widget.performances.contains(performance.id))
+          .toList();
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
@@ -24,6 +61,8 @@ class SongFormWidget extends StatelessWidget {
             buildTitle(),
             SizedBox(height: 8),
             buildDescription(),
+            SizedBox(height: 8),
+            buildPerformances(context),
             SizedBox(height: 32),
             buildButton(),
           ],
@@ -32,8 +71,8 @@ class SongFormWidget extends StatelessWidget {
 
   Widget buildTitle() => TextFormField(
         maxLines: 1,
-        initialValue: title,
-        onChanged: onChangedTitle,
+        initialValue: widget.title,
+        onChanged: widget.onChangedTitle,
         validator: (title) {
           if (title!.isEmpty) {
             return 'Der Titel darf nicht leer sein';
@@ -48,12 +87,53 @@ class SongFormWidget extends StatelessWidget {
 
   Widget buildDescription() => TextFormField(
         maxLines: 3,
-        initialValue: description,
-        onChanged: onChangedDescription,
+        initialValue: widget.description,
+        onChanged: widget.onChangedDescription,
         decoration: InputDecoration(
           border: UnderlineInputBorder(),
           labelText: 'Beschreibung',
         ),
+      );
+
+  Widget buildPerformances(BuildContext context) {
+    final performancesText =
+        selectedPerformances.map((performance) => performance.title).join(', ');
+    final onTap = () async {
+      if (this.allPerformances.length == 0) {
+        return;
+      }
+      final newlySelectedPerformances = await Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AddPerformancesToSongList(
+                  isMultiSelection: true,
+                  allPerformances: this.allPerformances,
+                  alreadySelectedPerformances:
+                      List.of(this.selectedPerformances))));
+      if (newlySelectedPerformances == null) {
+        return;
+      }
+
+      setState(() => this.selectedPerformances = newlySelectedPerformances);
+      widget.onChangedPerformances(
+          selectedPerformances.map((performance) => performance.id).toList());
+    };
+
+    return this.selectedPerformances.isEmpty
+        ? buildListTile(title: 'Kein Auftritt', onTap: onTap)
+        : buildListTile(title: performancesText, onTap: onTap);
+  }
+
+  Widget buildListTile({required String title, required VoidCallback onTap}) =>
+      ListTile(
+        title: Text(
+          title,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(color: Colors.black, fontSize: 18),
+        ),
+        trailing: Icon(Icons.arrow_drop_down, color: Colors.black),
+        onTap: onTap,
       );
 
   Widget buildButton() => SizedBox(
@@ -62,7 +142,7 @@ class SongFormWidget extends StatelessWidget {
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.black),
           ),
-          onPressed: onSavedSong,
+          onPressed: widget.onSavedSong,
           child: Text('Speichern'),
         ),
       );
