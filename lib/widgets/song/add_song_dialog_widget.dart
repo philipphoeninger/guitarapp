@@ -15,33 +15,38 @@ class _AddSongDialogWidgetState extends State<AddSongDialogWidget> {
   final _formKey = GlobalKey<FormState>();
   String title = '';
   String description = '';
+  List<String> performances = [];
 
   @override
-  Widget build(BuildContext context) => AlertDialog(
-    content: Form(
-      key: _formKey,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Song erstellen',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 22,
+  Widget build(BuildContext context) => SingleChildScrollView(
+        child: AlertDialog(
+          content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Song erstellen',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                SongFormWidget(
+                  onChangedTitle: (title) => setState(() => this.title = title),
+                  onChangedDescription: (description) =>
+                      setState(() => this.description = description),
+                  onSavedSong: addSong,
+                  onChangedPerformances: (List<String> performances) =>
+                      setState(() => this.performances = performances),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 8),
-          SongFormWidget(
-            onChangedTitle: (title) => setState(() => this.title = title),
-            onChangedDescription: (description) =>
-                setState(() => this.description = description),
-            onSavedSong: addSong,
-          ),
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 
   Future<void> addSong() async {
     final isValid = _formKey.currentState!.validate();
@@ -56,7 +61,7 @@ class _AddSongDialogWidgetState extends State<AddSongDialogWidget> {
           description: description,
           createdTime: DateTime.now(),
           user: user.uid,
-          performances: [],
+          performances: performances,
         );
 
         final provider = Provider.of<SongsProvider>(context, listen: false);

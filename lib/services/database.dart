@@ -17,6 +17,18 @@ class DatabaseService {
     return docPerformance.id;
   }
 
+  static Future<List<Performance>> getPerformances(SimpleUser user) async {
+    final performancesSnapshot = await FirebaseFirestore.instance
+        .collection('performances')
+        .where('user', whereIn: [user.uid, '0'])
+        .orderBy(PerformanceField.createdTime, descending: true)
+        .get();
+    var performances = performancesSnapshot.docs
+        .map((e) => Performance.fromJson(e.data()))
+        .toList();
+    return performances;
+  }
+
   static Stream<List<Performance>> readPerformances(SimpleUser user) {
     Stream<QuerySnapshot> stream = FirebaseFirestore.instance
         .collection('performances')
@@ -96,7 +108,9 @@ class DatabaseService {
   }
 
   static Future<String> createSong(Song song) async {
-    await addUnsortedPerformance(song);
+    if (song.performances.isEmpty) {
+      await addUnsortedPerformance(song);
+    }
 
     // set Song ID and add Song to Firebase
     final docSong = FirebaseFirestore.instance.collection('songs').doc();
@@ -114,10 +128,10 @@ class DatabaseService {
         .snapshots();
 
     return stream.map((event) => event.docs.map((doc) {
-      List<String> performancesIDs = [];
-      for (var per in doc['performances']) {
-        performancesIDs.add(per.toString());
-      }
+          List<String> performancesIDs = [];
+          for (var per in doc['performances']) {
+            performancesIDs.add(per.toString());
+          }
           return Song(
             id: doc['id'],
             title: doc['title'],
@@ -130,6 +144,9 @@ class DatabaseService {
   }
 
   static Future<String> updateSong(Song song) async {
+    if (song.performances.isEmpty) {
+      await addUnsortedPerformance(song);
+    }
     final docSong = FirebaseFirestore.instance.collection('songs').doc(song.id);
     await docSong.update(song.toJson());
     return docSong.id;
@@ -138,7 +155,12 @@ class DatabaseService {
   static Future<String> deleteSong(Song song) async {
     final docSong = FirebaseFirestore.instance.collection('songs').doc(song.id);
     // delete all parts from song
-    await FirebaseFirestore.instance.collection('songs').doc(song.id).collection('parts').get().then((snapshot) {
+    await FirebaseFirestore.instance
+        .collection('songs')
+        .doc(song.id)
+        .collection('parts')
+        .get()
+        .then((snapshot) {
       for (DocumentSnapshot part in snapshot.docs) {
         part.reference.delete();
       }

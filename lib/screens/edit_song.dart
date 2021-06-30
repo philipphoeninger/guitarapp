@@ -20,6 +20,7 @@ class _EditSongState extends State<EditSong> {
 
   late String title;
   late String description;
+  late List<String> performances;
 
   @override
   void initState() {
@@ -27,6 +28,7 @@ class _EditSongState extends State<EditSong> {
 
     title = widget.song.title;
     description = widget.song.description;
+    performances = widget.song.performances;
   }
 
   @override
@@ -56,9 +58,11 @@ class _EditSongState extends State<EditSong> {
           child: SongFormWidget(
             title: title,
             description: description,
+            performances: performances,
             onChangedTitle: (title) => setState(() => this.title = title),
             onChangedDescription: (description) =>
                 setState(() => this.description = description),
+            onChangedPerformances: (performances) => setState(() => this.performances = performances),
             onSavedSong: saveSong,
           ),
         ),
@@ -74,7 +78,7 @@ class _EditSongState extends State<EditSong> {
     } else {
       final provider = Provider.of<SongsProvider>(context, listen: false);
 
-      await provider.updateSong(widget.song, title, description);
+      await provider.updateSong(widget.song, title, description, performances);
       Utils.showSnackBar(context, 'Song bearbeitet');
       Navigator.of(context).pop();
     }
