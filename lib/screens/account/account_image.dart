@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 class AccountImage extends StatelessWidget {
   final String imagePath;
+  final bool isEdit;
   final VoidCallback onClicked;
 
   const AccountImage(
-      {Key? key, required this.imagePath, required this.onClicked})
+      {Key? key, required this.imagePath, this.isEdit = false, required this.onClicked})
       : super(key: key);
 
   @override
@@ -51,7 +52,7 @@ class AccountImage extends StatelessWidget {
           color: color,
           all: 8,
           child: Icon(
-            Icons.edit,
+            isEdit ? Icons.add_a_photo : Icons.edit,
             color: Colors.white,
             size: 20,
           ),
