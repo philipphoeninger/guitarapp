@@ -1,12 +1,12 @@
 import 'package:guitar_app/utils.dart';
 
 class SimpleUser {
-  final String uid;
-  final String imagePath;
-  final String email;
-  final String fullName;
-  final String description;
-  final DateTime createdTime;
+  String uid;
+  String imagePath;
+  String email;
+  String fullName;
+  String description;
+  DateTime createdTime;
 
   SimpleUser({required this.uid, required this.createdTime, this.email = '', this.fullName = '', this.description = '', this.imagePath = ''});
 

@@ -9,7 +9,7 @@ class AuthService {
   SimpleUser? _simpleUserFromUser(User? user) {
     String email = ((user != null && user.email != null && user.email != '') ? user.email : '<No Email Provided>')!;
     String fullName = ((user != null && user.displayName != null && user.displayName != '') ? user.displayName : '<No Name Provided>')!;
-    String description = '<No Description Provided>';  // add description field to user model in firebase
+    String description = '<No Description Provided>';
     DateTime createdTime = DateTime.fromMicrosecondsSinceEpoch(0);
     return user != null ? SimpleUser(uid: user.uid, createdTime: createdTime, email: email, fullName: fullName, description: description) : null;
   }
@@ -53,7 +53,7 @@ class AuthService {
       if (user != null) {
         Map<String, dynamic> simpleUser = SimpleUser(uid: user.uid, createdTime: DateTime.now(), email: email).toJson();
         CollectionReference collectionReference = FirebaseFirestore.instance.collection('simple_users');
-        await collectionReference.add(simpleUser);
+        await collectionReference.doc(user.uid).set(simpleUser);
       }
       else {
         print('SimpleUser wasn\'t added to Firestore because User returned from authResults was null');

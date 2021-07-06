@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:guitar_app/models/part.dart';
 import 'package:guitar_app/models/performance.dart';
 import 'package:guitar_app/models/simple_user.dart';
@@ -6,6 +9,35 @@ import 'package:guitar_app/models/song.dart';
 import 'package:guitar_app/utils.dart';
 
 class DatabaseService {
+  static firebase_storage.UploadTask? uploadFile(String destination, File file) {
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance.ref(destination);
+      ref.list().then((list) => {
+        if (list.items.isNotEmpty) {
+          // open: delete files
+        }
+      });
+
+      return ref.putFile(file);
+    } on FirebaseException catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  // SimpleUser CRUD methods
+  static Future<String> updateSimpleUser(SimpleUser user, String fullName, String description, String imagePath) async {
+    user.fullName = fullName;
+    user.description = description;
+    user.imagePath = imagePath;
+
+    final docSimpleUser = FirebaseFirestore.instance
+        .collection('simple_users')
+        .doc(user.uid);
+    await docSimpleUser.update(user.toJson());
+    return docSimpleUser.id;
+  }
+
   // Performance CRUD methods
 
   static Future<String> createPerformance(Performance performance) async {
