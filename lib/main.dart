@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:guitar_app/models/simple_user.dart';
-import 'package:guitar_app/providers/parts.dart';
-import 'package:guitar_app/providers/performances.dart';
-import 'package:guitar_app/providers/songs.dart';
-import 'package:guitar_app/screens/auth_wrapper.dart';
-import 'package:guitar_app/services/auth.dart';
+import 'package:guitar_app/user/user_model/simple_user.dart';
+import 'package:guitar_app/part/part_service/parts_provider.dart';
+import 'package:guitar_app/performance/performance_service/performances_provider.dart';
+import 'package:guitar_app/song/song_service/songs_provider.dart';
+import 'package:guitar_app/authentication/auth_wrapper.dart';
+import 'package:guitar_app/authentication/authentication_service/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
