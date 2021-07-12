@@ -3,7 +3,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:guitar_app/performance/performance_model/performance_model.dart';
 import 'package:guitar_app/performance/performance_service/performances_provider.dart';
 import 'package:guitar_app/performance/performance_edit/edit_performance.dart';
-import 'package:guitar_app/performance/performance_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:guitar_app/shared/utils.dart';
 
@@ -41,9 +40,7 @@ class PerformanceCardPerformances extends StatelessWidget {
       );
 
   Widget buildPerformance(BuildContext context) => GestureDetector(
-    onTap: () => Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => PerformanceScreen(performance: performance)),
-    ),
+    onTap: () => {},
         child: Container(
           padding: EdgeInsets.all(20),
           color: Colors.white,
