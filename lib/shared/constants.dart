@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:guitar_app/models/menu_item.dart';
+import 'package:guitar_app/settings/menu_item.dart';
 
 // Application Information
 const applicationVersion = '0.0.1';
