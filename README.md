@@ -20,7 +20,7 @@ A small app for taking notes for your music related projects.
 
 #### Is this project under active development right now?
 
-Yes.
+No. If you're interested in the projects continuation, please write an email.
 
 #### What's the goal of this application?
 
